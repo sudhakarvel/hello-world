@@ -1,0 +1,33 @@
+iapiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: your-app-deployment
+spec:
+  replicas: 3  # Adjust the number of replicas as needed
+  selector:
+    matchLabels:
+      app: your-app
+  template:
+    metadata:
+      labels:
+        app: your-app
+    spec:
+      containers:
+      - name: your-app-container
+        image: 637423242959.dkr.ecr.us-east-1.amazonaws.com/carapp:latest  # Update with your Docker image details
+        ports:
+        - containerPort: 80  # Adjust the port based on your application needs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: your-app-service
+spec:
+  selector:
+    app: your-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80  # Ensure this matches the containerPort in the deployment
+  type: LoadBalancer  # Use LoadBalancer for AWS EKS
+
